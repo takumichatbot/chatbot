@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, jsonify, g
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
-from qa_data import QA_DATA
 import sqlite3
 
 load_dotenv()
@@ -34,23 +33,12 @@ def get_gemini_answer(question):
     try:
         model = genai.GenerativeModel('models/gemini-1.5-flash')
         print("Geminiモデルを初期化しました")
-
-        qa_string = ""
-        for key, value in QA_DATA.items():
-            qa_string += f"### {key}\n{value}\n"
         
         full_question = f"""
-        あなたはラルボットのカスタマーサポートAIです。
-        以下の「ルール・規則」セクションに記載されている情報のみに基づいて、お客様からの質問に回答してください。
-        **記載されていない質問には「申し訳ありませんが、その情報はこのQ&Aには含まれていません。」と答えてください。**
-        お客様がスムーズに手続きを進められるよう、元気で丁寧な言葉遣いで案内してください。
+        あなたは親切なAIアシスタントです。
+        ユーザーからの質問に対して、簡潔で分かりやすい言葉で回答してください。
 
-        ---
-        ## ルール・規則
-        {qa_string}
-        ---
-
-        お客様の質問: {question}
+        ユーザーの質問: {question}
         """
         print("Gemini APIにリクエストを送信します...")
         response = model.generate_content(full_question, request_options={'timeout': 30})
