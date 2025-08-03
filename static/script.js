@@ -7,7 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage(question);
         });
     });
+
+    // ページ読み込み時に履歴を取得して表示
+    loadHistory();
 });
+
+async function loadHistory() {
+    const response = await fetch('/history');
+    const history = await response.json();
+    history.forEach(item => {
+        addMessageToChat(item.sender, item.message);
+    });
+}
 
 async function sendMessage(message = null) {
     const userInput = document.getElementById('user-input');
@@ -46,13 +57,11 @@ async function sendMessage(message = null) {
     } catch (error) {
         console.error('Fetchエラー:', error);
         
-        // ローディングメッセージを削除
         const loadingMessage = document.querySelector('.bot-message:last-child');
         if (loadingMessage) {
             loadingMessage.remove();
         }
 
-        // タイムアウトやネットワークエラーの場合のメッセージ
         addMessageToChat('bot', '申し訳ありませんが、ネットワーク接続に問題が発生しました。しばらくしてから再度お試しください。');
     }
 }
