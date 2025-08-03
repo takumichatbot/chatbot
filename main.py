@@ -115,9 +115,13 @@ def ask_chatbot():
 
 if __name__ == '__main__':
 <<<<<<< HEAD
+<<<<<<< HEAD
     # ポート番号を5001から5002に変更
     app.run(debug=True, port=5002)
 
 =======
     app.run(debug=True, port=5002)
 >>>>>>> f0ca4b6 (Add history and persistence features)
+=======
+    app.run(debug=True, port=5000)
+>>>>>>> 29fb765 (Commit local changes before pulling)
