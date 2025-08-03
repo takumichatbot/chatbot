@@ -10,15 +10,19 @@
     <div class="chatbot-container">
         <div class="chatbot-header">AIチャットボット</div>
         <div class="chatbot-messages" id="chatbot-messages">
-            <div class="message bot-message">こんにちは！何か質問はありますか？(営業時間など)
+            <div class="message bot-message">こんにちは！何か質問はありますか？</div>
+            <div class="example-questions-container">
+                <button class="example-btn">チャットボットについて</button>
+                <button class="example-btn">チャットボットの特徴</button>
+                <button class="example-btn">チャットボットの価格</button>
+                <button class="example-btn">チャットボットに関するお問い合わせ</button>
             </div>
         </div>
         <div class="chatbot-input">
-            <input type="text" id="user-input" placeholder="質問を入力してください..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="user-input" placeholder="メッセージを入力..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()">送信</button>
         </div>
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+   <script src="/static/script.js"></script>
 </body>
 </html>

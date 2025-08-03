@@ -1,24 +1,21 @@
 /* 全体のスタイル */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    font-size: 1.1em; /* 基本のフォントサイズを少し大きく */
 }
 
 /* チャットボットコンテナ */
 .chatbot-container {
-    width: 90%; /* 横幅を少し広げる */
-    max-width: 600px; /* 最大横幅を大きく */
-    height: 90%;
-    max-height: 800px; /* 最大高さを大きく */
+    width: 380px;
+    height: 650px;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -26,75 +23,78 @@ body {
 
 /* ヘッダー */
 .chatbot-header {
-    background-color: #6c5ce7;
+    background-color: #7d44c9;
     color: #fff;
-    padding: 20px; /* パディングを少し大きく */
-    font-size: 1.4em; /* フォントサイズを少し大きく */
-    font-weight: bold;
+    padding: 15px;
     text-align: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 /* メッセージエリア */
 .chatbot-messages {
     flex-grow: 1;
-    padding: 20px;
+    padding: 15px;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
 }
 
-/* 個々のメッセージ */
+/* メッセージ */
 .message {
-    padding: 15px 20px; /* パディングを少し大きく */
-    border-radius: 20px;
-    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
     max-width: 80%;
-    line-height: 1.5;
     word-wrap: break-word;
 }
 
-/* ボットのメッセージ */
 .bot-message {
     background-color: #f1f0f0;
-    color: #333;
     align-self: flex-start;
-    border-top-left-radius: 5px;
 }
 
-/* ユーザーのメッセージ */
 .user-message {
-    background-color: #6c5ce7;
+    background-color: #a3e2a3; /* 画像の緑色に合わせました */
     color: #fff;
     align-self: flex-end;
-    border-top-right-radius: 5px;
+    margin-left: auto;
 }
 
-/* 入力エリア */
+/* 質問例ボタン */
+.example-questions-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.example-btn {
+    background-color: #a3e2a3;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1em;
+}
+
+/* 入力欄 */
 .chatbot-input {
     display: flex;
     padding: 15px;
     border-top: 1px solid #ddd;
-    background-color: #f9f9f9;
 }
 
 .chatbot-input input {
     flex-grow: 1;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 20px;
     padding: 10px 15px;
     font-size: 1em;
-    transition: border-color 0.3s;
-}
-
-.chatbot-input input:focus {
-    outline: none;
-    border-color: #6c5ce7;
 }
 
 .chatbot-input button {
-    background-color: #6c5ce7;
+    background-color: #7d44c9;
     color: #fff;
     border: none;
     border-radius: 20px;
@@ -102,9 +102,4 @@ body {
     margin-left: 10px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s;
-}
-
-.chatbot-input button:hover {
-    background-color: #5a4bcf;
 }

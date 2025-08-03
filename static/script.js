@@ -1,41 +1,69 @@
-// static/script.js
-function sendMessage() {
-    const userInput = document.getElementById('user-input');
-    const message = userInput.value.trim();
-
-    if (message === '') {
-        return; // 入力が空の場合は何もしない
-    }
-
-    appendMessage(message, 'user-message');
-    userInput.value = ''; // 入力フィールドをクリア
-
-    // チャットボットAPIにメッセージを送信
-    fetch('/ask', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: message })
-    })
-    .then(response => response.json())
-    .then(data => {
-        appendMessage(data.answer, 'bot-message');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        appendMessage('エラーが発生しました。もう一度お試しください。', 'bot-message');
+// script.js
+document.addEventListener('DOMContentLoaded', () => {
+    // 質問例ボタンがクリックされたときの処理
+    document.querySelectorAll('.example-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const question = button.textContent;
+            sendMessage(question);
+        });
     });
+});
+
+async function sendMessage(message = null) {
+    const userInput = document.getElementById('user-input');
+    const userMessage = message || userInput.value.trim();
+
+    if (userMessage === '') return;
+
+    // ユーザーメッセージをチャット画面に追加
+    addMessageToChat('user', userMessage);
+    userInput.value = '';
+
+    // ローディングメッセージを表示
+    addMessageToChat('bot', '回答を生成中です...');
+
+    try {
+        const response = await fetch('/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        });
+
+        if (!response.ok) {
+            throw new Error(`サーバーエラー: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // ローディングメッセージを削除
+        document.querySelector('.bot-message:last-child').remove();
+        
+        // AIの回答をチャット画面に追加
+        addMessageToChat('bot', data.answer);
+
+    } catch (error) {
+        console.error('Fetchエラー:', error);
+        
+        // ローディングメッセージを削除
+        const loadingMessage = document.querySelector('.bot-message:last-child');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+
+        // タイムアウトやネットワークエラーの場合のメッセージ
+        addMessageToChat('bot', '申し訳ありませんが、ネットワーク接続に問題が発生しました。しばらくしてから再度お試しください。');
+    }
 }
 
-function appendMessage(text, className) {
-    const messagesDiv = document.getElementById('chatbot-messages');
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message', className);
-    messageElement.textContent = text;
-    messagesDiv.appendChild(messageElement);
-    // 最新のメッセージが見えるようにスクロール
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+function addMessageToChat(sender, message) {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', `${sender}-message`);
+    messageDiv.textContent = message;
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 function handleKeyPress(event) {
