@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIチャットボット</title>
+    <title>ラルボット</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="chatbot-container">
-        <header>
-            <h1 class="chatbot-title">AIチャットボット</h1>
+        <header class="chatbot-header">
+            <h1 class="chatbot-title">ラルボット</h1>
         </header>
         <div class="chatbot-messages" id="chatbot-messages">
-            <div class="message bot-message">こんにちは！何か質問はありますか？</div>
+            <div class="message bot-message">こんにちは！ラルボットです！何か質問はありますか？（フラスタや回収、札についてなど）</div>
         </div>
         <div class="chatbot-input">
-            <input type="text" id="user-input" placeholder="メッセージを入力..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="user-input" placeholder="質問を入力してください..." onkeypress="handleKeyPress(event)">
             <button id="send-btn" onclick="sendMessage()">送信</button>
         </div>
     </div>
