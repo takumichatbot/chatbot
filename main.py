@@ -84,5 +84,5 @@ def ask_chatbot():
     return jsonify({'answer': bot_answer})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
 
