@@ -1,23 +1,14 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
-    // ページ読み込み時に履歴を取得して表示
-    loadHistory();
-});
-
-async function loadHistory() {
-    try {
-        const response = await fetch('/history');
-        if (!response.ok) {
-            throw new Error(`サーバーエラー: ${response.status}`);
-        }
-        const history = await response.json();
-        history.forEach(item => {
-            addMessageToChat(item.sender, item.message);
+    // 質問例ボタンがクリックされたときの処理 (もしあれば)
+    document.querySelectorAll('.example-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const question = button.textContent;
+            sendMessage(question);
         });
-    } catch (error) {
-        console.error('Fetchエラー（履歴取得）:', error);
-    }
-}
+    });
+    // 履歴機能を削除したため、loadHistory()の呼び出しを削除
+});
 
 async function sendMessage(message = null) {
     const userInput = document.getElementById('user-input');
