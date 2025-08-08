@@ -4,6 +4,9 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 
+# qa_data.pyからQAデータをインポート
+from qa_data import QA_DATA
+
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -13,6 +16,9 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 app = Flask(__name__)
 
+# QAデータをプロンプトに組み込むためのテキストを作成
+qa_prompt_text = "\n\n".join([f"## {key}\n{value}" for key, value in QA_DATA.items()])
+
 def get_gemini_answer(question):
     print(f"質問: {question}")
     try:
@@ -21,9 +27,14 @@ def get_gemini_answer(question):
         
         full_question = f"""
         あなたはLARUbotのカスタマーサポートAIです。
-        以下の「ルール・規則」セクションに記載されている情報のみに基づいて、お客様からの質問に絵文字を使わずに丁寧に回答してください。
+        以下の情報のみに基づいて、お客様からの質問に丁寧に回答してください。
         **記載されていない質問には「申し訳ありませんが、その情報はこのQ&Aには含まれていません。」と答えてください。**
-        お客様がスムーズに手続きを進められるよう、元気で丁寧な言葉遣いで案内してください。
+        お客様がスムーズに手続きを進められるよう、丁寧な言葉遣いで案内してください。
+
+        ---
+        # ルール・規則
+        {qa_prompt_text}
+        ---
 
         ユーザーの質問: {question}
         """
@@ -57,3 +68,4 @@ def ask_chatbot():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
