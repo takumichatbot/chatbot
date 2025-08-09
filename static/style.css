@@ -1,86 +1,146 @@
+/* 全体のスタイル */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e9ecef, #f8f9fa); /* グラデーション背景 */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    font-size: 1em;
 }
 
+/* チャットボットコンテナ */
 .chatbot-container {
     width: 90%;
-    max-width: 400px;
-    height: 90%;
-    max-height: 800px;
+    max-width: 600px;
+    height: 90vh;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* 角丸を大きく */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* 影を強調 */
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
-
 /* ヘッダー */
 .chatbot-header {
-    background-color: #3b5998;
+    background: linear-gradient(90deg, #3b5998, #3b5998); /* ヘッダーをグラデーションに */
     color: #fff;
-    padding: 5px;
+    padding: 15px;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: bold;
 }
 
-
-
+/* メッセージエリア */
 .chatbot-messages {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 15px;
+    scroll-behavior: smooth; /* スムーズスクロール */
 }
 
+/* 個々のメッセージ */
 .message {
-    padding: 10px 15px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    max-width: 80%;
+    padding: 15px 20px;
+    border-radius: 20px;
+    max-width: 85%;
+    line-height: 1.6;
     word-wrap: break-word;
+    white-space: pre-wrap; /* 改行を保持 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-.user-message {
-    background-color: #dcf8c6;
-    align-self: flex-end;
+/* フェードインアニメーション */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+/* ボットのメッセージ */
 .bot-message {
-    background-color: #e5e5e5;
+    background-color: #f1f0f0;
+    color: #333;
     align-self: flex-start;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #e0e0e0;
 }
 
+/* ユーザーのメッセージ */
+.user-message {
+    background-color: #3b5998;
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+}
+
+/* 入力エリア */
 .chatbot-input {
     display: flex;
-    padding: 10px;
-    border-top: 1px solid #e0e0e0;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+    align-items: center;
 }
 
-#user-input {
+.chatbot-input input {
     flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #e0e0e0;
-    border-radius: 20px;
-    margin-right: 10px;
-    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 1em;
+    transition: all 0.3s;
 }
 
-#send-btn {
-    background-color: #3b5998; /* 濃い青色 */
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
+.chatbot-input input:focus {
     outline: none;
+    border-color: #3b5998;
+    box-shadow: 0 0 0 2px rgba(90, 103, 216, 0.2);
+}
+
+.chatbot-input button {
+    background-color: #3b5998;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+.chatbot-input button:hover {
+    background-color: #3b5998;
+    transform: translateY(-1px);
+}
+
+/* ローディングメッセージのスタイル */
+.loading-message {
+    background-color: #f1f0f0;
+    color: #888;
+    align-self: flex-start;
+    padding: 15px 20px;
+    border-radius: 20px;
+    max-width: 80%;
+    line-height: 1.5;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
 }

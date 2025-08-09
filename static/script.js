@@ -1,13 +1,8 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
-    // 質問例ボタンがクリックされたときの処理 (もしあれば)
-    document.querySelectorAll('.example-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const question = button.textContent;
-            sendMessage(question);
-        });
-    });
-    // 履歴機能を削除したため、loadHistory()の呼び出しを削除
+    // 初回表示時にスクロール位置を調整
+    const messagesContainer = document.getElementById('chatbot-messages');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 });
 
 async function sendMessage(message = null) {
@@ -21,7 +16,8 @@ async function sendMessage(message = null) {
     userInput.value = '';
 
     // ローディングメッセージを表示
-    addMessageToChat('bot', '回答を生成中です...');
+    const loadingMessageId = 'loading-' + new Date().getTime();
+    addMessageToChat('bot', '...', true, loadingMessageId);
 
     try {
         const response = await fetch('/ask', {
@@ -39,33 +35,53 @@ async function sendMessage(message = null) {
         const data = await response.json();
         
         // ローディングメッセージを削除
-        const loadingMessage = document.querySelector('.bot-message:last-child');
-        if (loadingMessage) {
-            loadingMessage.remove();
-        }
-        
+        removeLoadingMessage(loadingMessageId);
+
         // AIの回答をチャット画面に追加
         addMessageToChat('bot', data.answer);
 
     } catch (error) {
         console.error('Fetchエラー:', error);
         
-        const loadingMessage = document.querySelector('.bot-message:last-child');
-        if (loadingMessage) {
-            loadingMessage.remove();
-        }
+        // ローディングメッセージを削除
+        removeLoadingMessage(loadingMessageId);
 
+        // タイムアウトやネットワークエラーの場合のメッセージ
         addMessageToChat('bot', '申し訳ありませんが、ネットワーク接続に問題が発生しました。しばらくしてから再度お試しください。');
     }
 }
 
-function addMessageToChat(sender, message) {
+function addMessageToChat(sender, message, isLoading = false, id = null) {
     const messagesContainer = document.getElementById('chatbot-messages');
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', `${sender}-message`);
-    messageDiv.textContent = message;
+
+    if (isLoading) {
+        messageDiv.classList.add('loading-message');
+        if (id) {
+            messageDiv.id = id;
+        }
+    }
+
+    // URLをリンクに変換
+    const linkifiedMessage = message.replace(
+        /(https?:\/\/[^\s<>"'()]+)/g,
+        '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #667eea;">$1</a>'
+    );
+    
+    // HTMLとして挿入
+    messageDiv.innerHTML = linkifiedMessage; 
+
     messagesContainer.appendChild(messageDiv);
+    // 自動スクロール
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function removeLoadingMessage(id) {
+    const loadingMessageElement = document.getElementById(id);
+    if (loadingMessageElement) {
+        loadingMessageElement.remove();
+    }
 }
 
 function handleKeyPress(event) {

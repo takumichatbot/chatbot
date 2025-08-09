@@ -3,8 +3,6 @@ from flask import Flask, render_template, request, jsonify
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
-
-# qa_data.pyからQAデータをインポート
 from qa_data import QA_DATA
 
 load_dotenv()
@@ -17,27 +15,29 @@ genai.configure(api_key=GOOGLE_API_KEY)
 app = Flask(__name__)
 
 # QAデータをプロンプトに組み込むためのテキストを作成
-qa_prompt_text = "\n\n".join([f"## {key}\n{value}" for key, value in QA_DATA.items()])
+qa_prompt_text = "\n\n".join([f"### {key}\n{value}" for key, value in QA_DATA['data'].items()])
 
 def get_gemini_answer(question):
     print(f"質問: {question}")
     try:
         model = genai.GenerativeModel('models/gemini-1.5-flash')
         print("Geminiモデルを初期化しました")
-        
+
+        # QA_DATAをプロンプトに組み込む
         full_question = f"""
         あなたはLARUbotのカスタマーサポートAIです。
-        以下の情報のみに基づいて、お客様からの質問に丁寧に回答してください。
+        以下の「ルール・規則」セクションに記載されている情報のみに基づいて、お客様からの質問に絵文字を使わずに丁寧に回答してください。
         **記載されていない質問には「申し訳ありませんが、その情報はこのQ&Aには含まれていません。」と答えてください。**
-        お客様がスムーズに手続きを進められるよう、丁寧な言葉遣いで案内してください。
-
+        お客様がスムーズに手続きを進められるよう、元気で丁寧な言葉遣いで案内してください。
+        
         ---
-        # ルール・規則
+        ## ルール・規則
         {qa_prompt_text}
         ---
 
-        ユーザーの質問: {question}
+        お客様の質問: {question}
         """
+
         print("Gemini APIにリクエストを送信します...")
         response = model.generate_content(full_question, request_options={'timeout': 30})
         print("Gemini APIから応答を受け取りました")
@@ -52,6 +52,7 @@ def get_gemini_answer(question):
         print(f"Gemini APIエラー: {type(e).__name__} - {e}")
         return "申し訳ありませんが、現在AIが応答できません。しばらくしてから再度お試しください。"
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -63,9 +64,7 @@ def ask_chatbot():
         return jsonify({'answer': '質問が空です。'})
 
     bot_answer = get_gemini_answer(user_message)
-    
     return jsonify({'answer': bot_answer})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-

@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ラルボット</title>
+    <title>LARUbot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="chatbot-container">
-        <header class="chatbot-header">
-            <h1 class="chatbot-title">LARUbot</h1>
-        </header>
+        <div class="chatbot-header">
+            LARUbot
+        </div>
         <div class="chatbot-messages" id="chatbot-messages">
-            <div class="message bot-message">こんにちは！LARUbot(ラルボット)です！何か質問はありますか？（料金プランや導入までの流れなど）</div>
+            <div class="message bot-message">こんにちは！LARUbot(ラルボット)です！ 何か質問はありますか？(プラン説明や導入までの流れなど)</div>
         </div>
         <div class="chatbot-input">
-            <input type="text" id="user-input" placeholder="質問を入力してください..." onkeypress="handleKeyPress(event)">
-            <button id="send-btn" onclick="sendMessage()">送信</button>
+            <input type="text" id="user-input" placeholder="メッセージを入力..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">送信</button>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+   <script src="/static/script.js"></script>
 </body>
 </html>
